@@ -134,6 +134,7 @@ class maze_maker :
         
         return True
 
+
     def solve_maze(self, maze_dic):
         """[summary]
 
@@ -181,49 +182,13 @@ class maze_maker :
 
         return maze_dic, check
 
-    
 
-if __name__ == "__main__" :
-    test = maze_maker(100)
-    maze_solved_possible = False
+    def get_maze(self, width, height, way_in= [0, 1], way_out = None) :
+        maze = self.make_maze(width, height, way_in, way_out = None)
+        maze_solved, maze_solved_possible = self.solve_maze(maze)
+        while not maze_solved_possible :
+            maze_solved, maze_solved_possible = self.solve_maze(maze)
+            if maze_solved_possible == False : # 풀 수 없는 미로의 경우 다시 생성
+                continue
+        return maze_solved
 
-    while not maze_solved_possible :
-
-        maze = test.make_maze(51,50)
-        maze_solved, maze_solved_possible = test.solve_maze(maze)
-        if maze_solved_possible == False : # 풀 수 없는 미로의 경우 다시 생성
-            continue
-        maze_str = []
-        temp = ""
-        for line in maze['maze'] :
-            temp = ''
-            for i in line:
-                if i == 0:
-                    temp += "■"
-                else :
-                    temp += "□"
-            maze_str.append(temp)
-        # print(maze_str)
-        f = open('maze.txt', 'w', encoding="utf=8")
-        for i in maze_str:
-            f.writelines(i)
-            f.writelines("\n")
-
-        maze_str2 = []
-        for line in maze_solved['maze'] :
-            temp = ''
-            for i in line:
-                if i == 0:
-                    temp += "■"
-                elif i == 1 :
-                    temp += "□"
-                elif i == 2 :
-                    temp += "▣"
-                elif i == 3 :
-                    temp += "□"
-            maze_str2.append(temp)
-        # print(maze_str)
-        f = open('maze_soved.txt', 'w', encoding="utf=8")
-        for i in maze_str2:
-            f.writelines(i)
-            f.writelines("\n")
